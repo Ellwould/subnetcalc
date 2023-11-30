@@ -13,7 +13,7 @@
 
 ## Still To Do:
 
-- Add Nginx config files
+- Add Nginx config files ✓
 - Add guide for Let's Encrypt
 - Add unit files for Debian
 - Write Bash script for easy install
