@@ -13,11 +13,15 @@
 
 ## Still To Do:
 
-- Add Nginx config files ✓
-- Add guide for Let's Encrypt
-- Add unit files for Debian
-- Write Bash script for easy install
-- Test security of Go programs
+☑ - Add Nginx config files
+
+☐ - Add guide for Let's Encrypt
+
+☐ - Add unit files for Debian
+
+☐ - Write Bash script for easy install
+
+☐ - Test security of Go programs
 
 <br>
 <br>
