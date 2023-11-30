@@ -39,7 +39,7 @@ func main() {
 	var endHTML string
 	endHTML = resource.EndHTML()
 
-	http.HandleFunc("/subnet-post", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 
 		fmt.Fprint(w, startHTML)
 		fmt.Fprintf(w, "&nbsp &nbsp &nbsp")
