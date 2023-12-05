@@ -17,7 +17,7 @@
 
 ☐ - Add guide for Let's Encrypt
 
-☐ - Add unit files for Debian
+☑ - Add unit files for Debian
 
 ☐ - Write Bash script for easy install
 
