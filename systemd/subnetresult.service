@@ -1,0 +1,12 @@
+[Unit]
+Description=subnetresult
+Requires=subnetcalc.service
+
+[Service]
+User=subnetcalc
+Group=subnetcalc
+Type=simple
+ExecStart=/usr/local/bin/subnetresult
+
+[Install]
+WantedBy=multi-user.target
