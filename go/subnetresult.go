@@ -34,8 +34,8 @@ import (
 	"strconv"
 )
 
-// Function to convert CIDR prefix into total IPv4 Addresses and minus one
-func prefixFormula(var1 string) int {
+// Function to convert CIDR notation into total IPv4 Addresses and minus one
+func cidrFormula(var1 string) int {
 	var var2 float64
 	var2, _ = strconv.ParseFloat(var1, 0)
 	var var3 float64
@@ -83,27 +83,27 @@ func main() {
 		validateIpAddress := validator.New()
 		validateIpAddressErr := validateIpAddress.Var(ipAddress, "oneof=10.0.0.0 192.168.0.0")
 
-		//Get CIDR prefix and validate
-		f2 := r.FormValue("cidr_prefix")
-		var cidrPrefix string
-		cidrPrefix = f2
-		validateCidrPrefix := validator.New()
-		validateCidrPrefixErr := validateCidrPrefix.Var(cidrPrefix, "oneof=30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9 8")
+		//Get CIDR notation and validate
+		f2 := r.FormValue("cidr_notation")
+		var cidrNotation string
+		cidrNotation = f2
+		validateCidrNotation := validator.New()
+		validateCidrNotationErr := validateCidrNotation.Var(cidrNotation , "oneof=30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9 8")
 
-		//Conditional statment that tests the user input has correct IPv4's and CIDR prefix
-		if validateIpAddressErr != nil || validateCidrPrefixErr != nil {
+		//Conditional statment that tests the user input has correct IPv4's and CIDR notation
+		if validateIpAddressErr != nil || validateCidrNotationErr != nil {
 			fmt.Fprint(w, startHTML)
 			fmt.Fprint(w, "<h1>Incorrect IPv4 and/or CIDR prefix")
 			homeButton(w, domainName)
 			fmt.Fprint(w, endHTML)
-		} else if ipAddress == "10.0.0.0" && validateCidrPrefixErr == nil {
+		} else if ipAddress == "10.0.0.0" && validateCidrNotationErr == nil {
 			var prefix int
-			prefix = prefixFormula(cidrPrefix)
+			cidr = cidrFormula(cidrNotation)
 			const octet1 = int(10)
 			var octet2, octet3, octet4 int
-			octet2 = prefix / 65536
-			octet3 = prefix / 256
-			octet4 = prefix / 1
+			octet2 = cidr / 65536
+			octet3 = cidr / 256
+			octet4 = cidr / 1
 			fmt.Fprint(w, startHTML)
 			fmt.Fprint(w, "<h1>IPv4 Network ID: 10.0.0.0</h1")
 			fmt.Fprint(w, "<br>")
@@ -121,21 +121,21 @@ func main() {
 				fmt.Fprint(w, "<h1>Last Usable IPv4 Host Address: ", octet1, ".", octet2, ".", octet3, ".", octet4-1, "</h1>")
 				fmt.Fprint(w, "<h1>IPv4 Broadcast Address: ", octet1, ".", octet2, ".", octet3, ".", octet4, "</h1>")
 			}
-			totalIp(w, prefix)
+			totalIp(w, cidr)
 			homeButton(w, domainName)
 			fmt.Fprint(w, endHTML)
-		} else if ipAddress == "192.168.0.0" && validateCidrPrefixErr == nil {
-			var prefix int
-			prefix = prefixFormula(cidrPrefix)
+		} else if ipAddress == "192.168.0.0" && validateCidrNotationErr == nil {
+			var cidr int
+		        cidr = cidrFormula(cidrNotation)
 			const octet1 = int(192)
 			const octet2 = int(168)
 			var octet3, octet4 int
-			octet3 = prefix / 256
-			octet4 = prefix / 1
+			octet3 = cidr / 256
+			octet4 = cidr / 1
 			fmt.Fprint(w, startHTML)
 			if octet4 > 65535 {
 				fmt.Fprint(w, "<h1>192.168.0.0/16 can only have</h1>")
-				fmt.Fprint(w, "<h1>CIDR prefixes between</h1>")
+				fmt.Fprint(w, "<h1>CIDR Notation between</h1>")
 				fmt.Fprint(w, "<h1>/16 to /30</h1>")
 			} else if octet4 < 256 {
 				fmt.Fprint(w, "<h1>IPv4 Network ID: 192.168.0.0</h1")
@@ -143,13 +143,13 @@ func main() {
 				fmt.Fprint(w, "<h1>First Usable IPv4 Host Address: 192.168.0.1")
 				fmt.Fprint(w, "<h1>Last Usable IPv4 Host Address: ", octet1, ".", octet2, ".", 0, ".", octet4-1, "</h1>")
 				fmt.Fprint(w, "<h1>IPv4 Broadcast Address: ", octet1, ".", octet2, ".", 0, ".", octet4, "</h1>")
-				totalIp(w, prefix)
+				totalIp(w, cidr)
 			} else {
 				fmt.Fprint(w, "<h1>IPv4 Network ID: 192.168.0.0</h1>")
 				fmt.Fprint(w, "<h1>First Usable IPv4 Host Address: 192.168.0.1")
 				fmt.Fprint(w, "<h1>Last Usable IPv4 Host Address: ", octet1, ".", octet2, ".", octet3, ".", 255-1, "</h1>")
 				fmt.Fprint(w, "<h1>IPv4 Broadcast Address: ", octet1, ".", octet2, ".", octet3, ".", 255, "</h1>")
-				totalIp(w, prefix)
+				totalIp(w, cidr)
 			}
 			homeButton(w, domainName)
 			fmt.Fprint(w, endHTML)
