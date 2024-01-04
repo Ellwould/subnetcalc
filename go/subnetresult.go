@@ -97,7 +97,7 @@ func main() {
 			homeButton(w, domainName)
 			fmt.Fprint(w, endHTML)
 		} else if ipAddress == "10.0.0.0" && validateCidrNotationErr == nil {
-			var prefix int
+			var cidr int
 			cidr = cidrFormula(cidrNotation)
 			const octet1 = int(10)
 			var octet2, octet3, octet4 int
