@@ -69,6 +69,11 @@ cd /root/go/src/subnetresult;
 go build subnetresult.go;
 cd /root;
 
+# Create system user named subnetcalc with no shell, no home directory and lock account
+
+useradd -r -s /bin/false subnetcalc;
+usermod -L subnetcalc;
+
 # Change executables file permissions, owner, group and move executables
 
 chown root.subnetcalc /root/go/src/subnethome/subnethome;
