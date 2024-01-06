@@ -43,6 +43,12 @@ systemctl daemon-reload;
 wget -P /root https://go.dev/dl/go1.21.4.linux-amd64.tar.gz;
 rm -rf /usr/local/go && tar -C /usr/local -xzf /root/go1.21.4.linux-amd64.tar.gz;
 
+# Create HTML/CSS directory and copy HTML/CSS start and end file over
+
+mkdir /usr/local/etc/resource;
+cp /root/subnetcalc/html/start.html /usr/local/etc/resource;
+cp /root/subnetcalc/html/end.html /usr/local/etc/resource;
+
 # Create Go directories in root home directory
 
 mkdir -p /root/go/{bin,pkg,src/subnethome,src/subnetresult};
