@@ -56,11 +56,11 @@ go mod tidy;
 # Install the latest version of Nginx
 
 apt install curl gnupg2 ca-certificates lsb-release debian-archive-keyring;
-curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor tee /usr/share/keyrings/nginx-archive-keyring.gpg > /dev/null;
+curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor | tee /usr/share/keyrings/nginx-archive-keyring.gpg > /dev/null;
 gpg --dry-run --quiet --no-keyring --import --import-options import-show /usr/share/keyrings/nginx-archive-keyring.gpg;
 
 printf '________________________________________________________________________________________________________';
-printf '\n\nThe Nginx fingerprint above should be 573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62\n';
+printf '\n\nThe Nginx fingerprint above should be\n      573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62\n';
 printf 'Does the finger print match? (yes/no):';
 read ans
 if [ "$ans" = "yes" ] || [ "$ans" = "Yes" ] || [ "$ans" = "y" ] || [ "$ans" = "Y" ]
