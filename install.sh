@@ -49,6 +49,12 @@ mkdir /usr/local/etc/resource;
 cp /root/subnetcalc/html/start.html /usr/local/etc/resource;
 cp /root/subnetcalc/html/end.html /usr/local/etc/resource;
 
+# User input for FQDN
+
+touch /usr/local/etc/resource/FQDN.txt;
+read -p "Please enter FQDN: " FQDN;
+echo $FQDN > /usr/local/etc/resource/FQDN.txt;
+
 # Create Go directories in root home directory
 
 mkdir -p /root/go/{bin,pkg,src/subnethome,src/subnetresult};
@@ -161,13 +167,11 @@ done;
 
 fileFQDNArray=("/etc/nginx/nginx.conf" "/etc/nginx/conf.d/nginx_subnet.conf" "/etc/nginx/conf.d/nginx_tls.conf");
 
-echo "Please enter FQDN:";
-read -p "" replace;
-
 for fileName in ${fileFQDNArray[@]}
 do
   filename=$fileName;
   search="Add_FQDN";
+  replace=$FQDN;
   if [ -z "${replace}" ]
   then
     echo "FQDN cannot be empty please run install script again";
