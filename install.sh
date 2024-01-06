@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 # [NOT READY FOR PRODUCTION]
 
 # Install Script for Subnetcalc
@@ -14,6 +13,8 @@ then
   printf "\nPlease run as root\n\n";
   exit;
 fi;
+
+cd root;
 
 #----------------------------------------------------------------------
 
@@ -46,10 +47,18 @@ rm -rf /usr/local/go && tar -C /usr/local -xzf /root/go1.21.4.linux-amd64.tar.gz
 
 mkdir -p /root/go/{bin,pkg,src/subnethome,src/subnetresult};
 
+# Copy Go source code
+
+cp /root/subnetcalc/go/subnethome.go /root/go/src/subnethome/subnethome.go;
+cp /root/subnetcalc/go/subnetresult.go /root/go/src/subnetresult/subnetresult.go;
+
 # Create Go mod for subnetresult
 
-go mod init /root/go/src/subnetresult;
+export PATH=$PATH:/usr/local/go/bin;
+cd /root/go/src/subnetresult;
+go mod init root/go/src/subnetresult;
 go mod tidy;
+cd /root;
 
 #----------------------------------------------------------------------
 
