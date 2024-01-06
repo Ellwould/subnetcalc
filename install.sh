@@ -77,9 +77,9 @@ usermod -L subnetcalc;
 # Change executables file permissions, owner, group and move executables
 
 chown root:subnetcalc /root/go/src/subnethome/subnethome;
-chmod 060 /root/go/src/subnethome/subnethome;
+chmod 050 /root/go/src/subnethome/subnethome;
 chown root:subnetcalc /root/go/src/subnetresult/subnetresult;
-chmod 060 /root/go/src/subnetresult/subnetresult;
+chmod 050 /root/go/src/subnetresult/subnetresult;
 mv /root/go/src/subnethome/subnethome /usr/local/bin/subnethome;
 mv /root/go/src/subnetresult/subnetresult /usr/local/bin/subnetresult;
 
