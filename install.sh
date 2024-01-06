@@ -39,8 +39,8 @@ systemctl daemon-reload;
 
 # Remove any previous version of Go, download and install Go 1.21.4 
 
-wget https://go.dev/dl/go1.21.4.linux-amd64.tar.gz;
-rm -rf /usr/local/go && tar -C /usr/local -xzf go1.21.4.linux-amd64.tar.gz;
+wget -P /root https://go.dev/dl/go1.21.4.linux-amd64.tar.gz;
+rm -rf /usr/local/go && tar -C /usr/local -xzf /root/go1.21.4.linux-amd64.tar.gz;
 
 # Create Go directories in root home directory
 
