@@ -44,7 +44,7 @@ rm -rf /usr/local/go && tar -C /usr/local -xzf go1.21.4.linux-amd64.tar.gz;
 
 # Create Go directories in root home directory
 
-mkdir -p /root/go/{bin,pkg,src/subnetcalc,src/subnetresult};
+mkdir -p /root/go/{bin,pkg,src/subnethome,src/subnetresult};
 
 # Create Go mod for subnetresult
 
