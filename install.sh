@@ -58,7 +58,7 @@ then
   exit;
 elif [ ! -d "/etc/letsencrypt/live/$certDirectory" ]
 then
-  printf "\nPlease run \"pre-install-cert.sh\" script first";
+  printf "\nPlease run \"pre-install-cert.sh\" script first\n\n";
   exit;
 fi;
 
