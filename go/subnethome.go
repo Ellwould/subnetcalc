@@ -174,11 +174,11 @@ func main() {
 		fmt.Fprintf(w, "<br>")
 		fmt.Fprint(w, endHTML)
 	})
-	ipPort := "127.0.0.1:8000"
-	fmt.Println("subnethome is running on IP address and port " + ipPort)
+	port := "localhost:8000"
+	fmt.Println("subnethome is running on localhost and port " + port)
 
 	// Start server on port specified above
-	log.Fatal(http.ListenAndServe(ipPort, nil))
+	log.Fatal(http.ListenAndServe(port, nil))
 }
 
 // Contributor(s):

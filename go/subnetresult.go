@@ -161,12 +161,11 @@ func main() {
 		}
 	})
 
-	ipPort := "127.0.0.1:8001"
-	//Display in stout which IPv4 and port is used
-	fmt.Println("subnet result is running on IP address and port " + ipPort)
+	port := "localhost:8001"
+	fmt.Println("subnet result is running on localhost and port " + port)
 
 	//Log error
-	if err := http.ListenAndServe(ipPort, nil); err != nil {
+	if err := http.ListenAndServe(port, nil); err != nil {
 		log.Fatal(err)
 	}
 }
