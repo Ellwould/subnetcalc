@@ -17,13 +17,13 @@
 <br>
 <br>
 
-## Install
+## Install:
 
 #### 1) git clone https://github.com/Ellwould/subnetcalc
 
-#### 2) Run pre-install-cert.sh
+#### 2) bash pre-install-cert.sh
 
-#### 3) Run install.sh
+#### 3) bash install.sh
 
 <br>
 <br>
