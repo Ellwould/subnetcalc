@@ -32,7 +32,7 @@ fi;
 
 # Input values for variables
 
-printf "\nPlease enter certificate directory in path for Let's Encrypt certificates.\nFor example if the path were /etc/letsencrypt/live/example.com\nYou would enter example.com\n\n";
+printf "\nPlease enter certificate directory in path for Let's Encrypt certificates.\nFor example if the path were /etc/letsencrypt/live/example.com\nYou would enter example.com\n";
 read -p "Certificate Directory: " certDirectory;
 
 printf "\nPlease enter the FQDN, this could be the same as the certificate directory just entered.\n";
