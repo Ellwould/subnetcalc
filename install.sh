@@ -30,13 +30,38 @@ fi;
 
 #----------------------------------------------------------------------
 
-# Check Let's Encrypt certificate directory exists and request certificates if they do not exist.
+# Input values for variables
 
-read -p "Please enter certificate directory in path for Let's encrypt certificates,\n for example if the path were /etc/letsencrypt/live/example.com/ \nYou would enter example.com: " certDirectory;
+printf "\nPlease enter certificate directory in path for Let's Encrypt certificates.\nFor example if the path were /etc/letsencrypt/live/example.com\nYou would enter example.com\n\n";
+read -p "Certificate Directory: " certDirectory;
 
-if [ ! -d "/etc/letsencrypt/live/$certDirectory" ]
+printf "\nPlease enter the FQDN, this could be the same as the certificate directory just entered.";
+read -p "FQDN: " FQDN;
+
+printf "\nPlease enter IPv4 address of server, if no public IPv4 address 127.0.0.1 can be used.";
+read -p "Public IPv4 Address: " IPv4;
+
+printf "\nPlease enter IPv6 address of server, if no public IPv6 address ::1 can be used.";
+read -p "Public IPv6 Address: " IPv6;
+
+# Check Let's Encrypt certificate directory exists and request
+# certificates if they do not exist.
+# Check FQDN has been input
+
+if [ -z "${certDirectory}" ] or [ -z "${FQDN}" ]
 then
-  certbot certonly --manual --key-type=ecdsa --elliptic-curve secp384r1 --preferred-challenges=dns --server https://acme-v02.api.letsencrypt.org/directory;
+  printf "\nCert directory and Fully Qualified Domain Name (FQDN)cannot be empty";
+  source /root/subnetcalc/install.sh;
+elif [ -z "${IPv4}" ]
+then
+  IPv4=="127.0.0.1";
+elif [ -z "${IPv6}" ]
+then
+  IPv6=="::1";
+elif [ ! -d "/etc/letsencrypt/live/$certDirectory" ]
+then
+  certbot certonly --manual --key-type=ecdsa --elliptic-curve secp384r1 --preferred-challenges=dns --server https://acme-v02.api.letsencrypt.org/directory -d $certDirectory;
+  source /root/subnetcalc/install.sh;
 fi;
 
 #----------------------------------------------------------------------
@@ -158,21 +183,15 @@ function textUpdate {
 
 # Update Nginx config files with your server IPv4 and IPv6 addresses
 
-searchIpArray=("Add_public_IPv4_Address" "Add_public_IPv6_Address");
+filename="/etc/nginx/nginx.conf";
+search="Add_public_IPv4_Address";
+replace=$IPv4;
+textUpdate;
 
-for ip in ${searchIpArray[@]}
-do
-  filename="/etc/nginx/nginx.conf";
-  search=$ip;
-  echo -e "$ip"', \nif no public IP put 127.0.0.1 for IPv4 and ::1 for IPv6, \nto find the server IP addresse(s) use command "ip addr":' | tr _ " ";
-  read -p "" replace;
-  if [ -z "${replace}" ];
-  then
-    echo "IP address cannot be empty please run install script again";
-    exit;
-  fi;
-  textUpdate;
-done;
+filename="/etc/nginx/nginx.conf";
+search="Add_public_IPv6_Address";
+replace=$IPv6;
+textUpdate;
 
 # Update Nginx config files with your FQDN and also add's Let's Encrypt cert location
 
@@ -196,11 +215,6 @@ done;
 filename="/etc/nginx/conf.d/nginx_tls.conf";
 search="Add_Cert_Directory";
 replace=$certDirectory;
-if [ -z "${replace}" ]
-then
-  echo "Certificate directory cannot be empty please run install script again";
-  exit;
-fi;
 textUpdate;
 
 systemctl restart nginx;
