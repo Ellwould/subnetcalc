@@ -23,7 +23,7 @@ read -p "Domain Name: " domainName;
 
 if [ -z "${domainName}" ]
 then
-  printf "\nDomain name cannot be empty\n";
+  printf "\nDomain name cannot be empty\n\n";
   exit;
 fi;
 
