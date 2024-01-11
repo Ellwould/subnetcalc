@@ -12,6 +12,18 @@
 
 #### Wrote for GNU/Linux (Ubuntu 23.04)
 
+### View subnetcalc on: https://subnet.ell.today 
+
+<br>
+<br>
+
+## Install
+
+#### 1) git clone https://github.com/Ellwould/subnetcalc
+
+#### 2) Run pre-install-cert.sh
+
+#### 3) Run install.sh
 
 <br>
 <br>
