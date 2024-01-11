@@ -6,9 +6,11 @@
 
 #### Uses TLSv1.3 with ECDSA certificate
 
-#### Easy install with 2 Bash scripts 
+#### Easy install with 2 Bash scripts
 
 #### Wrote for GNU/Linux (Ubuntu 23.04)
+
+#### Listen on IPv4 and IPv6
 
 ### View subnetcalc on: https://subnet.ell.today 
 
