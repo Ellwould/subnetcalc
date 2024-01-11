@@ -179,3 +179,5 @@ do
   fi;
   textUpdate;
 done;
+
+systemctl restart subnetcalc;
