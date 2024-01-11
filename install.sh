@@ -32,7 +32,7 @@ fi;
 
 # Input values for variables
 
-printf "\nPlease enter certificate directory in path for Let's Encrypt certificates.\nFor example if the path were /etc/letsencrypt/live/example.com\nYou would enter example.com\n";
+printf "\nPlease enter certificate directory in path for Let's Encrypt certificates.\nFor example if the path were /etc/letsencrypt/live/example.com\nYou would enter example.com\nIf no path exists enter the domanin name to request a certificate from Let's Encrypt\n";
 read -p "Certificate Directory: " certDirectory;
 
 printf "\nPlease enter the FQDN, this could be the same as the certificate directory just entered.\n";
@@ -50,8 +50,8 @@ read -p "Public IPv6 Address: " IPv6;
 
 if [ -z "${certDirectory}" ] || [ -z "${FQDN}" ]
 then
-  printf "\nCert directory and Fully Qualified Domain Name (FQDN) cannot be empty";
-  source /root/subnetcalc/install.sh;
+  printf "\nCert directory and Fully Qualified Domain Name (FQDN) cannot be empty\n";
+  exit;
 elif [ -z "${IPv4}" ]
 then
   IPv4=="127.0.0.1";
@@ -66,7 +66,6 @@ then
   snap install --classic certbot;
   ln -s /snap/bin/certbot /usr/bin/certbot;
   certbot certonly --manual --key-type=ecdsa --elliptic-curve secp384r1 --preferred-challenges=dns --server https://acme-v02.api.letsencrypt.org/directory -d $certDirectory;
-  source /root/subnetcalc/install.sh;
 fi;
 
 #----------------------------------------------------------------------
