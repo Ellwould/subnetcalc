@@ -1,5 +1,3 @@
-### (STILL IN DEVELOPMENT)
-
 # subnetcalc
 
 #### A simple subnet calculator written in Go for RFC 1918 10.0.0.0 & 192.168.0.0 IPv4 Addresses
