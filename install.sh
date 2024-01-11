@@ -38,19 +38,19 @@ read -p "Certificate Directory: " certDirectory;
 printf "\nPlease enter the FQDN, this could be the same as the certificate directory just entered.";
 read -p "FQDN: " FQDN;
 
-printf "\nPlease enter IPv4 address of server, if no public IPv4 address, 127.0.0.1 can be used.";
+printf "\nPlease enter IPv4 address of server, if no public IPv4 address, 127.0.0.1 can be used.\n";
 read -p "Public IPv4 Address: " IPv4;
 
-printf "\nPlease enter IPv6 address of server, if no public IPv6 address, ::1 can be used.";
+printf "\nPlease enter IPv6 address of server, if no public IPv6 address, ::1 can be used.\n";
 read -p "Public IPv6 Address: " IPv6;
 
 # Check Let's Encrypt certificate directory exists and request
 # certificates if they do not exist.
 # Check FQDN has been input
 
-if [ -z "${certDirectory}" ] or [ -z "${FQDN}" ]
+if [ -z "${certDirectory}" ] || [ -z "${FQDN}" ]
 then
-  printf "\nCert directory and Fully Qualified Domain Name (FQDN)cannot be empty";
+  printf "\nCert directory and Fully Qualified Domain Name (FQDN) cannot be empty";
   source /root/subnetcalc/install.sh;
 elif [ -z "${IPv4}" ]
 then
