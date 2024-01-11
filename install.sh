@@ -52,12 +52,10 @@ if [ -z "${certDirectory}" ] || [ -z "${FQDN}" ]
 then
   printf "\nCert directory and Fully Qualified Domain Name (FQDN) cannot be empty\n";
   exit;
-elif [ -z "${IPv4}" ]
+elif [ -z "${IPv4}" ] || [ -z "${IPv6}" ]
 then
-  IPv4=="127.0.0.1";
-elif [ -z "${IPv6}" ]
-then
-  IPv6=="::1";
+  printf "\nIPv4 and IPv6 cannot be empty\n";
+  exit;
 elif [ ! -d "/etc/letsencrypt/live/$certDirectory" ]
 then
   apt install snapd;
