@@ -35,7 +35,7 @@ fi;
 printf "\nPlease enter certificate directory in path for Let's Encrypt certificates.\nFor example if the path were /etc/letsencrypt/live/example.com\nYou would enter example.com\n\n";
 read -p "Certificate Directory: " certDirectory;
 
-printf "\nPlease enter the FQDN, this could be the same as the certificate directory just entered.";
+printf "\nPlease enter the FQDN, this could be the same as the certificate directory just entered.\n";
 read -p "FQDN: " FQDN;
 
 printf "\nPlease enter IPv4 address of server, if no public IPv4 address, 127.0.0.1 can be used.\n";
