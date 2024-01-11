@@ -180,4 +180,4 @@ do
   textUpdate;
 done;
 
-systemctl restart subnetcalc;
+systemctl restart nginx;
