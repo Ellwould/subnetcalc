@@ -44,6 +44,14 @@ read -p "Public IPv4 Address: " IPv4;
 printf "\nPlease enter IPv6 address of server, if no public IPv6 address, ::1 can be used.\n";
 read -p "Public IPv6 Address: " IPv6;
 
+# Install Certbot
+
+apt install snapd;
+snap install core;
+snap refresh core;
+snap install --classic certbot;  
+ln -s /snap/bin/certbot /usr/bin/certbot;
+
 # Check Let's Encrypt certificate directory exists and request
 # certificates if they do not exist.
 # Check FQDN has been input
@@ -58,11 +66,6 @@ then
   exit;
 elif [ ! -d "/etc/letsencrypt/live/$certDirectory" ]
 then
-  apt install snapd;
-  snap install core;
-  snap refresh core;
-  snap install --classic certbot;
-  ln -s /snap/bin/certbot /usr/bin/certbot;
   certbot certonly --manual --key-type=ecdsa --elliptic-curve secp384r1 --preferred-challenges=dns --server https://acme-v02.api.letsencrypt.org/directory -d $certDirectory;
 fi;
 
