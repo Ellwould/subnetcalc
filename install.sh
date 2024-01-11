@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# [NOT READY FOR PRODUCTION]
-
 # Install Script for Subnetcalc
 
 #----------------------------------------------------------------------
