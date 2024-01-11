@@ -10,7 +10,7 @@
 
 #### Wrote for GNU/Linux (Ubuntu 23.04)
 
-#### Listen on IPv4 and IPv6
+#### Listens on IPv4 and IPv6
 
 ### View subnetcalc on: https://subnet.ell.today 
 
