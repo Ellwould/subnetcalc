@@ -6,7 +6,12 @@
 
 #### Uses Nginx to proxy requests to Go programs
 
-#### Wrote for GNU/Linux (Debain)
+#### Uses TLSv1.3 with ECDSA certificate
+
+#### Easy install with 2 Bash scripts 
+
+#### Wrote for GNU/Linux (Ubuntu 23.04)
+
 
 <br>
 <br>
@@ -15,11 +20,11 @@
 
 ☑ - Add Nginx config files
 
-☐ - Add guide for Let's Encrypt
+☑ - Bash script for Let's Encrypt
 
 ☑ - Add unit files for Debian
 
-☐ - Write Bash script for easy install
+☑ - Write Bash script for easy install
 
 ☐ - Test security of Go programs
 
