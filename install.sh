@@ -30,6 +30,17 @@ fi;
 
 #----------------------------------------------------------------------
 
+# Check Let's Encrypt certificate directory exists and request certificates if they do not exist.
+
+read -p "Please enter certificate directory in path for Let's encrypt certificates,\n for example if the path were /etc/letsencrypt/live/example.com/ \nYou would enter example.com: " certDirectory;
+
+if [ ! -d "/etc/letsencrypt/live/$certDirectory" ]
+then
+  certbot certonly --manual --key-type=ecdsa --elliptic-curve secp384r1 --preferred-challenges=dns --server https://acme-v02.api.letsencrypt.org/directory;
+fi;
+
+#----------------------------------------------------------------------
+
 # Copy unit files and restart systemd deamon
 
 cp /root/subnetcalc/systemd/subnetcalc.service /usr/lib/systemd/system/;
@@ -165,7 +176,7 @@ done;
 
 # Update Nginx config files with your FQDN and also add's Let's Encrypt cert location
 
-fileFQDNArray=("/etc/nginx/nginx.conf" "/etc/nginx/conf.d/nginx_subnet.conf" "/etc/nginx/conf.d/nginx_tls.conf");
+fileFQDNArray=("/etc/nginx/nginx.conf" "/etc/nginx/conf.d/nginx_subnet.conf");
 
 for fileName in ${fileFQDNArray[@]}
 do
@@ -179,5 +190,17 @@ do
   fi;
   textUpdate;
 done;
+
+# Update Nginx TLS file with certificate directroy.
+
+filename="/etc/nginx/conf.d/nginx_tls.conf";
+search="Add_Cert_Directory";
+replace=$certDirectory;
+if [ -z "${replace}" ]
+then
+  echo "Certificate directory cannot be empty please run install script again";
+  exit;
+fi;
+textUpdate;
 
 systemctl restart nginx;
