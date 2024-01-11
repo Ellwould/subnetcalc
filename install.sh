@@ -58,7 +58,7 @@ ln -s /snap/bin/certbot /usr/bin/certbot;
 
 if [ -z "${certDirectory}" ] || [ -z "${FQDN}" ]
 then
-  printf "\nCert directory and Fully Qualified Domain Name (FQDN) cannot be empty\n";
+  printf "\nCertificate directory and Fully Qualified Domain Name (FQDN) cannot be empty\n";
   exit;
 elif [ -z "${IPv4}" ] || [ -z "${IPv6}" ]
 then
@@ -66,7 +66,8 @@ then
   exit;
 elif [ ! -d "/etc/letsencrypt/live/$certDirectory" ]
 then
-  certbot certonly --manual --key-type=ecdsa --elliptic-curve secp384r1 --preferred-challenges=dns --server https://acme-v02.api.letsencrypt.org/directory -d $certDirectory;
+  printf "\nPlease run \"pre-install-cert.sh\" script first";
+  exit;
 fi;
 
 #----------------------------------------------------------------------
