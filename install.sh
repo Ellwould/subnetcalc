@@ -60,6 +60,11 @@ then
   IPv6=="::1";
 elif [ ! -d "/etc/letsencrypt/live/$certDirectory" ]
 then
+  apt install snapd;
+  snap install core;
+  snap refresh core;
+  snap install --classic certbot;
+  ln -s /snap/bin/certbot /usr/bin/certbot;
   certbot certonly --manual --key-type=ecdsa --elliptic-curve secp384r1 --preferred-challenges=dns --server https://acme-v02.api.letsencrypt.org/directory -d $certDirectory;
   source /root/subnetcalc/install.sh;
 fi;
