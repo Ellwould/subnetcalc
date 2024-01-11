@@ -38,10 +38,10 @@ read -p "Certificate Directory: " certDirectory;
 printf "\nPlease enter the FQDN, this could be the same as the certificate directory just entered.";
 read -p "FQDN: " FQDN;
 
-printf "\nPlease enter IPv4 address of server, if no public IPv4 address 127.0.0.1 can be used.";
+printf "\nPlease enter IPv4 address of server, if no public IPv4 address, 127.0.0.1 can be used.";
 read -p "Public IPv4 Address: " IPv4;
 
-printf "\nPlease enter IPv6 address of server, if no public IPv6 address ::1 can be used.";
+printf "\nPlease enter IPv6 address of server, if no public IPv6 address, ::1 can be used.";
 read -p "Public IPv6 Address: " IPv6;
 
 # Check Let's Encrypt certificate directory exists and request
