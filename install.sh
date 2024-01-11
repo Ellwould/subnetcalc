@@ -131,6 +131,12 @@ chmod 050 /root/go/src/subnetresult/subnetresult;
 mv /root/go/src/subnethome/subnethome /usr/local/bin/subnethome;
 mv /root/go/src/subnetresult/subnetresult /usr/local/bin/subnetresult;
 
+# Change resource file permissions, owner and group
+
+chown -R root:subnetcalc /usr/local/etc/resource;
+chmod 050 /usr/local/etc/resource;
+chmod 040 /usr/local/etc/resource/*;
+
 # Srart subnetcalc programs and enable on boot
 
 systemctl start subnetcalc;
