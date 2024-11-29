@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-package resource
+package subnetcalcresource
 
 import (
 	"log"
@@ -31,7 +31,7 @@ import (
 
 func getFile(file string) string {
 	var path string
-	path = "/usr/local/etc/resource/"
+	path = "/usr/local/etc/subnetcalc-resource/"
 
 	var1, err := os.ReadFile(path + file)
 	if err != nil {
@@ -42,17 +42,17 @@ func getFile(file string) string {
 }
 
 func StartHTML() string {
-	var1 := getFile("start.html")
+	var1 := getFile("subnetcalc-start.html")
 	return var1
 }
 
 func EndHTML() string {
-	var1 := getFile("end.html")
+	var1 := getFile("subnetcalc-end.html")
 	return var1
 }
 
 func FQDN() string {
-	var1 := getFile("FQDN.txt")
+	var1 := getFile("subnetcalc-FQDN.txt")
 	return var1
 }
 
