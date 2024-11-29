@@ -83,8 +83,8 @@ cp /root/subnetcalc/html/subnetcalc-end.html /usr/local/etc/subnetcalc-resource/
 
 # Create and insert FQDN into FQDN.txt
 
-touch /usr/local/etc/subnetcalc-resource/FQDN.txt;
-echo $FQDN > /usr/local/etc/subnetcalc-resource/FQDN.txt;
+touch /usr/local/etc/subnetcalc-resource/subnetcalc-FQDN.txt;
+echo $FQDN > /usr/local/etc/subnetcalc-resource/subnetcalc-FQDN.txt;
 
 # Create Go directories in root home directory
 
