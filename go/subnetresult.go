@@ -30,7 +30,7 @@ import (
 	"log"
 	"math"
 	"net/http"
-	"resource"
+	"subnetcalcresource"
 	"strconv"
 )
 
@@ -61,11 +61,11 @@ func main() {
 
 	//Get HTML and CSS from file
 	var startHTML string
-	startHTML = resource.StartHTML()
+	startHTML = subnetcalcresource.StartHTML()
 
 	//Get HTML from file
 	var endHTML string
-	endHTML = resource.EndHTML()
+	endHTML = subnetcalcresource.EndHTML()
 
 	//Get FQDN from file
 	var domainName string
