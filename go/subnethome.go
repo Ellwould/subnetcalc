@@ -28,16 +28,16 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"resource"
+	"subnetcalcresource"
 )
 
 func main() {
 
 	var startHTML string
-	startHTML = resource.StartHTML()
+	startHTML = subnetcalcresource.StartHTML()
 
 	var endHTML string
-	endHTML = resource.EndHTML()
+	endHTML = subnetcalcresource.EndHTML()
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 
