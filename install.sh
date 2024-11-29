@@ -141,8 +141,8 @@ systemctl enable subnetcalc;
 
 # Install the latest version of Nginx
 
-apt install curl gnupg2 ca-certificates lsb-release debian-archive-keyring;
-curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor | tee /usr/share/keyrings/nginx-archive-keyring.gpg > /dev/null;
+apt install curl gnupg2 ca-certificates lsb-release ubuntu-keyring;
+curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor | sudo tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null;
 gpg --dry-run --quiet --no-keyring --import --import-options import-show /usr/share/keyrings/nginx-archive-keyring.gpg;
 
 printf '________________________________________________________________________________________________________';
