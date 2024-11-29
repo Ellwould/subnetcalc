@@ -69,7 +69,7 @@ func main() {
 
 	//Get FQDN from file
 	var domainName string
-	domainName = resource.FQDN()
+	domainName = subnetcalcresource.FQDN()
 
 	http.HandleFunc("/subnet-result", func(w http.ResponseWriter, r *http.Request) {
 		if err := r.ParseForm(); err != nil {
