@@ -77,25 +77,25 @@ rm -rf /usr/local/go && tar -C /usr/local -xzf /root/go1.21.6.linux-amd64.tar.gz
 
 # Create HTML/CSS directory and copy HTML/CSS start and end file
 
-mkdir /usr/local/etc/resource;
-cp /root/subnetcalc/html/start.html /usr/local/etc/resource;
-cp /root/subnetcalc/html/end.html /usr/local/etc/resource;
+mkdir /usr/local/etc/subnetcalc-resource;
+cp /root/subnetcalc/html/subnetcalc-start.html /usr/local/etc/subnetcalc-resource/;
+cp /root/subnetcalc/html/subnetcalc-end.html /usr/local/etc/subnetcalc-resource/;
 
 # Create and insert FQDN into FQDN.txt
 
-touch /usr/local/etc/resource/FQDN.txt;
-echo $FQDN > /usr/local/etc/resource/FQDN.txt;
+touch /usr/local/etc/subnetcalc-resource/FQDN.txt;
+echo $FQDN > /usr/local/etc/subnetcalc-resource/FQDN.txt;
 
 # Create Go directories in root home directory
 
 mkdir -p /root/go/{bin,pkg,src/subnethome,src/subnetresult};
-mkdir /usr/local/go/src/resource;
+mkdir /usr/local/go/src/subnetcalcresource;
 
 # Copy Go source code
 
 cp /root/subnetcalc/go/subnethome.go /root/go/src/subnethome/subnethome.go;
 cp /root/subnetcalc/go/subnetresult.go /root/go/src/subnetresult/subnetresult.go;
-cp /root/subnetcalc/go/resource.go /usr/local/go/src/resource/resource.go;
+cp /root/subnetcalc/go/subnetcalcresource.go /usr/local/go/src/subnetcalcresource/subnetcalcresource.go;
 
 # Create Go mod for subnetresult
 
@@ -128,9 +128,9 @@ mv /root/go/src/subnetresult/subnetresult /usr/local/bin/subnetresult;
 
 # Change resource file permissions, owner and group
 
-chown -R root:subnetcalc /usr/local/etc/resource;
-chmod 050 /usr/local/etc/resource;
-chmod 040 /usr/local/etc/resource/*;
+chown -R root:subnetcalc /usr/local/etc/subnetcalc-resource;
+chmod 050 /usr/local/etc/subnetcalc-resource;
+chmod 040 /usr/local/etc/subnetcalc-resource/*;
 
 # Srart subnetcalc programs and enable on boot
 
