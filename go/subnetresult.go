@@ -99,7 +99,7 @@ func main() {
 			fmt.Fprint(w, "<h1>Incorrect IPv4 and/or CIDR notation</h1>")
 			fmt.Fprint(w, "</th>")
 			fmt.Fprint(w, "</tr>")
-			fmt.Fprint(w, "</table>"
+			fmt.Fprint(w, "</table>")
 			homeButton(w, domainName)
 			fmt.Fprint(w, endHTML)
 		} else if ipAddress == "10.0.0.0" && validateCidrNotationErr == nil {
