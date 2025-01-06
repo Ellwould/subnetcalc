@@ -107,7 +107,7 @@ func main() {
 			fmt.Fprint(w, endHTML)
 		} else if ipAddress == "10.0.0.0" && validateCidrNotationErr == nil {
 			var cidr int
-			&nbsp &nbsp cidr = cidrFormula(cidrNotation)
+			cidr = cidrFormula(cidrNotation)
 			const octet1 = int(10)
 			var octet2, octet3, octet4 int
 			octet2 = cidr / 65536
