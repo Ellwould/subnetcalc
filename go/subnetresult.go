@@ -95,8 +95,7 @@ func main() {
 		//Conditional statment that tests the user input has correct IPv4's and CIDR notation
 		if validateIpAddressErr != nil || validateCidrNotationErr != nil {
 			fmt.Fprint(w, startHTML)
-			fmt.Fprint(w, "<br>")
-	                fmt.Fprint(w, "<br>")
+			fmt.Fprint(w, "&nbsp &nbsp")
 			fmt.Fprint(w, "<table>")
 			fmt.Fprint(w, "<tr>")
 			fmt.Fprint(w, "<th>")
@@ -115,6 +114,7 @@ func main() {
 			octet3 = cidr / 256
 			octet4 = cidr / 1
 			fmt.Fprint(w, startHTML)
+			fmt.Fprint(w, "&nbsp &nbsp")
 			fmt.Fprint(w, "<table class=\"resultTable\">")
 			fmt.Fprint(w, "<tr>")
 			fmt.Fprint(w, "<th>")
@@ -149,6 +149,7 @@ func main() {
 			octet3 = cidr / 256
 			octet4 = cidr / 1
 			fmt.Fprint(w, startHTML)
+			fmt.Fprint(w, "&nbsp &nbsp")
 			fmt.Fprint(w, "<table class=\"resultTable\">")
 			fmt.Fprint(w, "<tr>")
 			fmt.Fprint(w, "<th>")
@@ -177,6 +178,7 @@ func main() {
 			fmt.Fprint(w, endHTML)
 		} else {
 			fmt.Fprint(w, startHTML)
+			fmt.Fprint(w, "&nbsp &nbsp")
 			fmt.Fprint(w, "<table>")
 			fmt.Fprint(w, "<tr>")
 			fmt.Fprint(w, "<th>")
