@@ -95,11 +95,11 @@ func main() {
 		//Conditional statment that tests the user input has correct IPv4's and CIDR notation
 		if validateIpAddressErr != nil || validateCidrNotationErr != nil {
 			fmt.Fprint(w, startHTML)
-			fmt.Fprint(w, "&nbsp &nbsp")
+			fmt.Fprint(w, "&nbsp &nbsp &nbsp &nbsp")
 			fmt.Fprint(w, "<table>")
 			fmt.Fprint(w, "<tr>")
 			fmt.Fprint(w, "<th>")
-			fmt.Fprint(w, "<h1>Incorrect IPv4 and/or CIDR notation</h1>")
+			fmt.Fprint(w, "&nbsp &nbsp<h1>Incorrect IPv4 and/or CIDR notation</h1>&nbsp &nbsp")
 			fmt.Fprint(w, "</th>")
 			fmt.Fprint(w, "</tr>")
 			fmt.Fprint(w, "</table>")
@@ -118,21 +118,21 @@ func main() {
 			fmt.Fprint(w, "<table class=\"resultTable\">")
 			fmt.Fprint(w, "<tr>")
 			fmt.Fprint(w, "<th>")
-			fmt.Fprint(w, "<p>IPv4 Network ID: 10.0.0.0</p>")
+			fmt.Fprint(w, "&nbsp &nbsp<p>IPv4 Network ID: 10.0.0.0</p>&nbsp &nbsp")
 			fmt.Fprint(w, "<br>")
-			fmt.Fprint(w, "<p>First Usable IPv4 Host Address: 10.0.0.1</p>")
+			fmt.Fprint(w, "&nbsp &nbsp<p>First Usable IPv4 Host Address: 10.0.0.1</p>&nbsp &nbsp")
 			if octet3 > 255 && octet4 > 255 {
-				fmt.Fprint(w, "<p>Last Usable IPv4 Host Address: ", octet1, ".", octet2, ".", 255, ".", 255-1, "</p>")
-				fmt.Fprint(w, "<p>IPv4 Broadcast Address: ", octet1, ".", octet2, ".", 255, ".", 255, "</p>")
+				fmt.Fprint(w, "&nbsp &nbsp<p>Last Usable IPv4 Host Address: ", octet1, ".", octet2, ".", 255, ".", 255-1, "</p>&nbsp &nbsp")
+				fmt.Fprint(w, "&nbsp &nbsp<p>IPv4 Broadcast Address: ", octet1, ".", octet2, ".", 255, ".", 255, "</p>&nbsp &nbsp")
 			} else if octet3 > 255 {
-				fmt.Fprint(w, "<p>Last Usable IPv4 Host Address: ", octet1, ".", octet2, ".", 255, ".", octet4-1, "</p>")
-				fmt.Fprint(w, "<p>IPv4 Broadcast Address: ", octet1, ".", octet2, ".", 255, ".", octet4, "</p>")
+				fmt.Fprint(w, "&nbsp &nbsp<p>Last Usable IPv4 Host Address: ", octet1, ".", octet2, ".", 255, ".", octet4-1, "</p>&nbsp &nbsp")
+				fmt.Fprint(w, "&nbsp &nbsp<p>IPv4 Broadcast Address: ", octet1, ".", octet2, ".", 255, ".", octet4, "</p>&nbsp &nbsp")
 			} else if octet4 > 255 {
-				fmt.Fprint(w, "<p>Last Usable IPv4 Host Address: ", octet1, ".", octet2, ".", octet3, ".", 255-1, "</p>")
-				fmt.Fprint(w, "<p>IPv4 Broadcast Address: ", octet1, ".", octet2, ".", octet3, ".", 255, "</p>")
+				fmt.Fprint(w, "&nbsp &nbsp<p>Last Usable IPv4 Host Address: ", octet1, ".", octet2, ".", octet3, ".", 255-1, "</p>&nbsp &nbsp")
+				fmt.Fprint(w, "&nbsp &nbsp<p>IPv4 Broadcast Address: ", octet1, ".", octet2, ".", octet3, ".", 255, "</p>&nbsp &nbsp")
 			} else {
-				fmt.Fprint(w, "<p>Last Usable IPv4 Host Address: ", octet1, ".", octet2, ".", octet3, ".", octet4-1, "</p>")
-				fmt.Fprint(w, "<p>IPv4 Broadcast Address: ", octet1, ".", octet2, ".", octet3, ".", octet4, "</p>")
+				fmt.Fprint(w, "&nbsp &nbsp<p>Last Usable IPv4 Host Address: ", octet1, ".", octet2, ".", octet3, ".", octet4-1, "</p>&nbsp &nbsp")
+				fmt.Fprint(w, "&nbsp &nbsp<p>IPv4 Broadcast Address: ", octet1, ".", octet2, ".", octet3, ".", octet4, "</p>&nbsp &nbsp")
 			}
 			totalIp(w, cidr)
 			homeButton(w, domainName)
@@ -178,7 +178,7 @@ func main() {
 			fmt.Fprint(w, endHTML)
 		} else {
 			fmt.Fprint(w, startHTML)
-			fmt.Fprint(w, "&nbsp &nbsp")
+			fmt.Fprint(w, "&nbsp &nbsp &nbsp &nbsp")
 			fmt.Fprint(w, "<table>")
 			fmt.Fprint(w, "<tr>")
 			fmt.Fprint(w, "<th>")
