@@ -55,6 +55,8 @@ func homeButton(var1 http.ResponseWriter, var2 string) {
 	fmt.Fprint(var1, "<br>")
 	fmt.Fprint(var1, "<br>")
 	fmt.Fprint(var1, "<a href=\"https://"+var2+"\" class=\"tableButton\"><h2>Home</h2></a>")
+	fmt.Fprint(var1, "<br>")
+	fmt.Fprint(var1, "<br>")
 }
 
 func main() {
