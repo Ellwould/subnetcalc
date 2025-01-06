@@ -155,7 +155,7 @@ func main() {
 			fmt.Fprint(w, endHTML)
 		} else {
 			fmt.Fprint(w, startHTML)
-			fmt.Fprint(w, "<h1>Incorrect IPv4 and/or CIDR prefix")
+			fmt.Fprint(w, "<h1>Incorrect IPv4 and/or CIDR Notation")
 			homeButton(w, domainName)
 			fmt.Fprint(w, endHTML)
 		}
