@@ -46,8 +46,8 @@ func cidrFormula(var1 string) int {
 // Function to give total IPv4 Addresses
 func totalIp(var1 http.ResponseWriter, var2 int) {
 	fmt.Fprint(var1, "<br>")
-	fmt.Fprint(var1, "<h1>Total IPv4 Addresses: ", var2+1, "</h1>")
-	fmt.Fprint(var1, "<h1>Total Usable IPv4 Host Addresses: ", var2-1, "</h1>")
+	fmt.Fprint(var1, "<p>Total IPv4 Addresses: ", var2+1, "</p>")
+	fmt.Fprint(var1, "<p>Total Usable IPv4 Host Addresses: ", var2-1, "</p>")
 }
 
 // Function to provide HTML button to home page
