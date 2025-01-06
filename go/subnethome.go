@@ -48,7 +48,7 @@ func main() {
 		fmt.Fprintf(w, "  <tr>")
 		fmt.Fprintf(w, "    <td><h2>&nbsp &nbsp RFC 1918 Subnet Calculater &nbsp &nbsp</h2>")
 		fmt.Fprintf(w, "    <br>")
-		fmt.Fprintf(w, "    <h3>&nbsp &nbsp<a href=\"https://datatracker.ietf.org/doc/html/rfc1918\">Click Here for IETF RFC 1918 Document</a>&nbsp &nbsp</h3>")
+		fmt.Fprintf(w, "    <h3>&nbsp &nbsp<a href=\"https://datatracker.ietf.org/doc/html/rfc1918\">IETF RFC 1918 Document</a>&nbsp &nbsp</h3>")
 		fmt.Fprintf(w, "    <h3><a href=\"https://ell.today\">Written by Elliot Keavney (Website)</a></h3></td>")
 		fmt.Fprintf(w, "    <h3><a href=\"https://github.com/Ellwould/subnetcalc\">Subnetcalc Source Code (GitHub)</a></h3>")
 		fmt.Fprintf(w, "  </tr>")
