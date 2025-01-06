@@ -158,7 +158,7 @@ func main() {
 				fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp CIDR Notation between &nbsp &nbsp &nbsp &nbsp</p>")
 				fmt.Fprint(w, "<p>/16 to /30</p>")
 			} else if octet4 < 256 {
-				fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp IPv4 Network ID: 192.168.0.0 &nbsp &nbsp &nbsp &nbsp</h1")
+				fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp IPv4 Network ID: 192.168.0.0 &nbsp &nbsp &nbsp &nbsp</p>")
 				fmt.Fprint(w, "<br>")
 				fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp First Usable IPv4 Host Address: 192.168.0.1 &nbsp &nbsp &nbsp &nbsp</p>")
 				fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp Last Usable IPv4 Host Address: ", octet1, ".", octet2, ".", 0, ".", octet4-1, " &nbsp &nbsp &nbsp &nbsp</p>")
