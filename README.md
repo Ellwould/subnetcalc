@@ -26,6 +26,6 @@
 #### 3) bash install.sh
 
 <br>
-<br>
 
-For a list of abbreviations and there meanings used throughout this repository please refer to the README at - https://github.com/Ellwould/information_technology_and_telecommunication_abbreviations
+>[!NOTE]
+>For a list of abbreviations and there meanings used throughout this repository please refer to this [README](https://github.com/Ellwould/information_technology_and_telecommunication_abbreviations)
