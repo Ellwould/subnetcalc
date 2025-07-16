@@ -34,6 +34,53 @@ import (
 	"strconv"
 )
 
+// Constant for subnetcalc.env absolute path
+const subnetCalcEnv string = "/etc/subnetcalc/subnetcalc.env"
+
+// Constant for directory path that contains the files subnetcalc-start.html and subnetcalc-end.html
+const dirHTML string = "/etc/subnetcalc/html-css"
+
+// Constant for fileStartHTML file
+const fileStartHTML string = "subnetcalc-start.html"
+
+// Constant for fileEndHTML file
+const fileEndHTML string = "subnetcalc-end.html"
+
+// Constant for American National Standards Institute (ANSI) reset colour code
+const resetColour string = "\033[0m"
+
+// Constant for American National Standards Institute (ANSI) text colour codes
+const textBoldWhite string = "\033[1;37m"
+
+// Constant for American National Standards Institute (ANSI) background colour codes
+const bgRed string = "\033[41m"
+
+// Clear screen function for GNU/Linux OS's
+func clearScreen() {
+	fmt.Print("\033[H\033[2J")
+}
+
+// Function to draw box with squares around message, must have a message with characters that total a odd number
+func messageBox(bgColour string, messageColour string, message string) {
+	topBottomSquare := strings.Repeat(" □", (len(message)/2)+6)
+	inbetweenSpace := strings.Repeat(" ", len(message)+8)
+	fmt.Println(bgColour + messageColour)
+	fmt.Println(topBottomSquare + " ")
+	fmt.Println(" □" + inbetweenSpace + "□ ")
+	fmt.Println(" □    " + message + "    □ ")
+	fmt.Println(" □" + inbetweenSpace + "□ ")
+	fmt.Println(topBottomSquare + " ")
+	fmt.Print(resetColour)
+}
+
+// Function to display message on CLI informing the user the configuration file has a wrong value
+func invalidEnv(message string) {
+	clearScreen()
+	messageBox(bgRed, textBoldWhite, message)
+	fmt.Println("")
+	os.Exit(0)
+}
+
 // Function to convert CIDR notation into total IPv4 Addresses and minus one
 func cidrFormula(var1 string) int {
 	var var2 float64
@@ -61,17 +108,34 @@ func homeButton(var1 http.ResponseWriter, var2 string) {
 
 func main() {
 
-	//Get HTML and CSS from file
-	var startHTML string
-	startHTML = subnetcalcresource.StartHTML()
+	startHTML := csvcell.FileData(dirHTML, fileStartHTML)
+	endHTML := csvcell.FileData(dirHTML, fileEndHTML)
 
-	//Get HTML from file
-	var endHTML string
-	endHTML = subnetcalcresource.EndHTML()
+	err := godotenv.Load(subnetCalcEnv)
+	if err != nil {
+		panic("Error loading subnetcalc.env file")
+	}
 
-	//Get FQDN from file
-	var domainName string
-	domainName = subnetcalcresource.FQDN()
+	envAddress := os.Getenv("address")
+	envPort := os.Getenv("subnet_result_port")
+	envHomePort := os.Getenv("subnet_home_port")
+	envFQDN := os.Getenv("FQDN")
+
+	validateEnvIP := validator.New()
+	validateEnvIPErr := validateEnvIP.Var(envAddress, "required,ip_addr")
+
+	envPortInt, err := strconv.Atoi(envPort)
+	if err != nil {
+		invalidEnv("Port must be a number in " + subnetCalcEnv)
+	}
+
+	if envPortInt <= 0 || envPortInt >= 65536 {
+		invalidEnv("Port number in " + subnetCalcEnv + " must be between 1 and 65535")
+	} else if envPort == envHomePort {
+		invalidEnv("Home web page and result web page port numbers cannot be the same in " + subnetCalcEnv)
+	} else if validateEnvIPErr != nil && envAddress != "localhost" {
+		invalidEnv("Address in " + subnetCalcEnv + " must be a valid Internet Protocol (IP) address or localhost")
+	} else {
 
 	http.HandleFunc("/subnet-result", func(w http.ResponseWriter, r *http.Request) {
 		if err := r.ParseForm(); err != nil {
@@ -191,12 +255,13 @@ func main() {
 		}
 	})
 
-	port := "localhost:8001"
-	fmt.Println("subnet result is running on localhost and port " + port)
+	socket := envAddress + ":" + envPort
+	fmt.Println("subnet result is running on " + socket)
 
 	//Log error
-	if err := http.ListenAndServe(port, nil); err != nil {
+	if err := http.ListenAndServe(socket, nil); err != nil {
 		log.Fatal(err)
+	}
 	}
 }
 
