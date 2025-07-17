@@ -26,12 +26,15 @@ package main
 
 import (
 	"fmt"
+	"github.com/ellwould/csvcell"
 	"github.com/go-playground/validator/v10"
+	"github.com/joho/godotenv"
 	"log"
 	"math"
 	"net/http"
-	"subnetcalcresource"
+	"os"
 	"strconv"
+	"strings"
 )
 
 // Constant for subnetcalc.env absolute path
@@ -101,7 +104,7 @@ func totalIp(var1 http.ResponseWriter, var2 int) {
 func homeButton(var1 http.ResponseWriter, var2 string) {
 	fmt.Fprint(var1, "<br>")
 	fmt.Fprint(var1, "<br>")
-	fmt.Fprint(var1, "<a href=\"https://"+var2+"\" class=\"tableButton\"><h2>Home</h2></a>")
+	fmt.Fprint(var1, "<a href=\""+var2+"\" class=\"tableButton\"><h2>Home</h2></a>")
 	fmt.Fprint(var1, "<br>")
 	fmt.Fprint(var1, "<br>")
 }
@@ -119,10 +122,14 @@ func main() {
 	envAddress := os.Getenv("address")
 	envPort := os.Getenv("subnet_result_port")
 	envHomePort := os.Getenv("subnet_home_port")
-	envFQDN := os.Getenv("FQDN")
+	envURL := os.Getenv("URL")
 
 	validateEnvIP := validator.New()
 	validateEnvIPErr := validateEnvIP.Var(envAddress, "required,ip_addr")
+
+	validateEnvURL := validator.New()
+
+	validateEnvURLErr := validateEnvURL.Var(envURL, "required,url")
 
 	envPortInt, err := strconv.Atoi(envPort)
 	if err != nil {
@@ -135,133 +142,135 @@ func main() {
 		invalidEnv("Home web page and result web page port numbers cannot be the same in " + subnetCalcEnv)
 	} else if validateEnvIPErr != nil && envAddress != "localhost" {
 		invalidEnv("Address in " + subnetCalcEnv + " must be a valid Internet Protocol (IP) address or localhost")
+	} else if validateEnvURLErr != nil {
+		invalidEnv("URL in " + subnetCalcEnv + " must be a vaild URL")
 	} else {
 
-	http.HandleFunc("/subnet-result", func(w http.ResponseWriter, r *http.Request) {
-		if err := r.ParseForm(); err != nil {
-			fmt.Fprintf(w, "ParseForm() err: %v", err)
-		}
-
-		//Get IP Address and validate
-		f1 := r.FormValue("ip_address")
-		var ipAddress string
-		ipAddress = f1
-		validateIpAddress := validator.New()
-		validateIpAddressErr := validateIpAddress.Var(ipAddress, "oneof=10.0.0.0 192.168.0.0")
-
-		//Get CIDR notation and validate
-		f2 := r.FormValue("cidr_notation")
-		var cidrNotation string
-		cidrNotation = f2
-		validateCidrNotation := validator.New()
-		validateCidrNotationErr := validateCidrNotation.Var(cidrNotation , "oneof=30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9 8")
-
-		//Conditional statment that tests the user input has correct IPv4's and CIDR notation
-		if validateIpAddressErr != nil || validateCidrNotationErr != nil {
-			fmt.Fprint(w, startHTML)
-			fmt.Fprint(w, "&nbsp &nbsp &nbsp &nbsp")
-			fmt.Fprint(w, "<table>")
-			fmt.Fprint(w, "<tr>")
-			fmt.Fprint(w, "<th>")
-			fmt.Fprint(w, "<h1>&nbsp &nbsp &nbsp &nbsp Incorrect IPv4 and/or CIDR notation &nbsp &nbsp &nbsp &nbsp</h1>")
-			fmt.Fprint(w, "</th>")
-			fmt.Fprint(w, "</tr>")
-			fmt.Fprint(w, "</table>")
-			homeButton(w, domainName)
-			fmt.Fprint(w, endHTML)
-		} else if ipAddress == "10.0.0.0" && validateCidrNotationErr == nil {
-			var cidr int
-			cidr = cidrFormula(cidrNotation)
-			const octet1 = int(10)
-			var octet2, octet3, octet4 int
-			octet2 = cidr / 65536
-			octet3 = cidr / 256
-			octet4 = cidr / 1
-			fmt.Fprint(w, startHTML)
-			fmt.Fprint(w, "&nbsp &nbsp &nbsp &nbsp")
-			fmt.Fprint(w, "<table class=\"resultTable\">")
-			fmt.Fprint(w, "<tr>")
-			fmt.Fprint(w, "<th>")
-			fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp IPv4 Network ID: 10.0.0.0 &nbsp &nbsp &nbsp &nbsp</p>")
-			fmt.Fprint(w, "<br>")
-			fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp First Usable IPv4 Host Address: 10.0.0.1 &nbsp &nbsp &nbsp &nbsp</p>")
-			if octet3 > 255 && octet4 > 255 {
-				fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp Last Usable IPv4 Host Address: ", octet1, ".", octet2, ".", 255, ".", 255-1, " &nbsp &nbsp &nbsp &nbsp</p>")
-				fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp IPv4 Broadcast Address: ", octet1, ".", octet2, ".", 255, ".", 255, " &nbsp &nbsp &nbsp &nbsp</p>")
-			} else if octet3 > 255 {
-				fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp Last Usable IPv4 Host Address: ", octet1, ".", octet2, ".", 255, ".", octet4-1, " &nbsp &nbsp &nbsp &nbsp</p>")
-				fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp IPv4 Broadcast Address: ", octet1, ".", octet2, ".", 255, ".", octet4, " &nbsp &nbsp &nbsp &nbsp</p>")
-			} else if octet4 > 255 {
-				fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp Last Usable IPv4 Host Address: ", octet1, ".", octet2, ".", octet3, ".", 255-1, " &nbsp &nbsp &nbsp &nbsp</p>")
-				fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp IPv4 Broadcast Address: ", octet1, ".", octet2, ".", octet3, ".", 255, " &nbsp &nbsp &nbsp &nbsp</p>")
-			} else {
-				fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp Last Usable IPv4 Host Address: ", octet1, ".", octet2, ".", octet3, ".", octet4-1, " &nbsp &nbsp &nbsp &nbsp</p>")
-				fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp IPv4 Broadcast Address: ", octet1, ".", octet2, ".", octet3, ".", octet4, " &nbsp &nbsp &nbsp &nbsp</p>")
+		http.HandleFunc("/subnet-result", func(w http.ResponseWriter, r *http.Request) {
+			if err := r.ParseForm(); err != nil {
+				fmt.Fprintf(w, "ParseForm() err: %v", err)
 			}
-			totalIp(w, cidr)
-			homeButton(w, domainName)
-			fmt.Fprint(w, "</th>")
-			fmt.Fprint(w, "</tr>")
-			fmt.Fprint(w, "</table>")
-			fmt.Fprint(w, endHTML)
-		} else if ipAddress == "192.168.0.0" && validateCidrNotationErr == nil {
-			var cidr int
-		        cidr = cidrFormula(cidrNotation)
-			const octet1 = int(192)
-			const octet2 = int(168)
-			var octet3, octet4 int
-			octet3 = cidr / 256
-			octet4 = cidr / 1
-			fmt.Fprint(w, startHTML)
-			fmt.Fprint(w, "&nbsp &nbsp")
-			fmt.Fprint(w, "<table class=\"resultTable\">")
-			fmt.Fprint(w, "<tr>")
-			fmt.Fprint(w, "<th>")
-			if octet4 > 65535 {
-				fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp 192.168.0.0/16 can only have &nbsp &nbsp &nbsp &nbsp</p>")
-				fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp CIDR Notation between &nbsp &nbsp &nbsp &nbsp</p>")
-				fmt.Fprint(w, "<p>/16 to /30</p>")
-			} else if octet4 < 256 {
-				fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp IPv4 Network ID: 192.168.0.0 &nbsp &nbsp &nbsp &nbsp</p>")
+
+			//Get IP Address and validate
+			f1 := r.FormValue("ip_address")
+			var ipAddress string
+			ipAddress = f1
+			validateIpAddress := validator.New()
+			validateIpAddressErr := validateIpAddress.Var(ipAddress, "oneof=10.0.0.0 192.168.0.0")
+
+			//Get CIDR notation and validate
+			f2 := r.FormValue("cidr_notation")
+			var cidrNotation string
+			cidrNotation = f2
+			validateCidrNotation := validator.New()
+			validateCidrNotationErr := validateCidrNotation.Var(cidrNotation, "oneof=30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9 8")
+
+			//Conditional statment that tests the user input has correct IPv4's and CIDR notation
+			if validateIpAddressErr != nil || validateCidrNotationErr != nil {
+				fmt.Fprint(w, startHTML)
+				fmt.Fprint(w, "&nbsp &nbsp &nbsp &nbsp")
+				fmt.Fprint(w, "<table>")
+				fmt.Fprint(w, "<tr>")
+				fmt.Fprint(w, "<th>")
+				fmt.Fprint(w, "<h1>&nbsp &nbsp &nbsp &nbsp Incorrect IPv4 and/or CIDR notation &nbsp &nbsp &nbsp &nbsp</h1>")
+				fmt.Fprint(w, "</th>")
+				fmt.Fprint(w, "</tr>")
+				fmt.Fprint(w, "</table>")
+				homeButton(w, envURL)
+				fmt.Fprint(w, endHTML)
+			} else if ipAddress == "10.0.0.0" && validateCidrNotationErr == nil {
+				var cidr int
+				cidr = cidrFormula(cidrNotation)
+				const octet1 = int(10)
+				var octet2, octet3, octet4 int
+				octet2 = cidr / 65536
+				octet3 = cidr / 256
+				octet4 = cidr / 1
+				fmt.Fprint(w, startHTML)
+				fmt.Fprint(w, "&nbsp &nbsp &nbsp &nbsp")
+				fmt.Fprint(w, "<table class=\"resultTable\">")
+				fmt.Fprint(w, "<tr>")
+				fmt.Fprint(w, "<th>")
+				fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp IPv4 Network ID: 10.0.0.0 &nbsp &nbsp &nbsp &nbsp</p>")
 				fmt.Fprint(w, "<br>")
-				fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp First Usable IPv4 Host Address: 192.168.0.1 &nbsp &nbsp &nbsp &nbsp</p>")
-				fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp Last Usable IPv4 Host Address: ", octet1, ".", octet2, ".", 0, ".", octet4-1, " &nbsp &nbsp &nbsp &nbsp</p>")
-				fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp IPv4 Broadcast Address: ", octet1, ".", octet2, ".", 0, ".", octet4, " &nbsp &nbsp &nbsp &nbsp</p>")
+				fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp First Usable IPv4 Host Address: 10.0.0.1 &nbsp &nbsp &nbsp &nbsp</p>")
+				if octet3 > 255 && octet4 > 255 {
+					fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp Last Usable IPv4 Host Address: ", octet1, ".", octet2, ".", 255, ".", 255-1, " &nbsp &nbsp &nbsp &nbsp</p>")
+					fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp IPv4 Broadcast Address: ", octet1, ".", octet2, ".", 255, ".", 255, " &nbsp &nbsp &nbsp &nbsp</p>")
+				} else if octet3 > 255 {
+					fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp Last Usable IPv4 Host Address: ", octet1, ".", octet2, ".", 255, ".", octet4-1, " &nbsp &nbsp &nbsp &nbsp</p>")
+					fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp IPv4 Broadcast Address: ", octet1, ".", octet2, ".", 255, ".", octet4, " &nbsp &nbsp &nbsp &nbsp</p>")
+				} else if octet4 > 255 {
+					fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp Last Usable IPv4 Host Address: ", octet1, ".", octet2, ".", octet3, ".", 255-1, " &nbsp &nbsp &nbsp &nbsp</p>")
+					fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp IPv4 Broadcast Address: ", octet1, ".", octet2, ".", octet3, ".", 255, " &nbsp &nbsp &nbsp &nbsp</p>")
+				} else {
+					fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp Last Usable IPv4 Host Address: ", octet1, ".", octet2, ".", octet3, ".", octet4-1, " &nbsp &nbsp &nbsp &nbsp</p>")
+					fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp IPv4 Broadcast Address: ", octet1, ".", octet2, ".", octet3, ".", octet4, " &nbsp &nbsp &nbsp &nbsp</p>")
+				}
 				totalIp(w, cidr)
+				homeButton(w, envURL)
+				fmt.Fprint(w, "</th>")
+				fmt.Fprint(w, "</tr>")
+				fmt.Fprint(w, "</table>")
+				fmt.Fprint(w, endHTML)
+			} else if ipAddress == "192.168.0.0" && validateCidrNotationErr == nil {
+				var cidr int
+				cidr = cidrFormula(cidrNotation)
+				const octet1 = int(192)
+				const octet2 = int(168)
+				var octet3, octet4 int
+				octet3 = cidr / 256
+				octet4 = cidr / 1
+				fmt.Fprint(w, startHTML)
+				fmt.Fprint(w, "&nbsp &nbsp")
+				fmt.Fprint(w, "<table class=\"resultTable\">")
+				fmt.Fprint(w, "<tr>")
+				fmt.Fprint(w, "<th>")
+				if octet4 > 65535 {
+					fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp 192.168.0.0/16 can only have &nbsp &nbsp &nbsp &nbsp</p>")
+					fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp CIDR Notation between &nbsp &nbsp &nbsp &nbsp</p>")
+					fmt.Fprint(w, "<p>/16 to /30</p>")
+				} else if octet4 < 256 {
+					fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp IPv4 Network ID: 192.168.0.0 &nbsp &nbsp &nbsp &nbsp</p>")
+					fmt.Fprint(w, "<br>")
+					fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp First Usable IPv4 Host Address: 192.168.0.1 &nbsp &nbsp &nbsp &nbsp</p>")
+					fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp Last Usable IPv4 Host Address: ", octet1, ".", octet2, ".", 0, ".", octet4-1, " &nbsp &nbsp &nbsp &nbsp</p>")
+					fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp IPv4 Broadcast Address: ", octet1, ".", octet2, ".", 0, ".", octet4, " &nbsp &nbsp &nbsp &nbsp</p>")
+					totalIp(w, cidr)
+				} else {
+					fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp IPv4 Network ID: 192.168.0.0 &nbsp &nbsp &nbsp &nbsp</p>")
+					fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp First Usable IPv4 Host Address: 192.168.0.1 &nbsp &nbsp &nbsp &nbsp</p>")
+					fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp Last Usable IPv4 Host Address: ", octet1, ".", octet2, ".", octet3, ".", 255-1, " &nbsp &nbsp &nbsp &nbsp</p>")
+					fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp IPv4 Broadcast Address: ", octet1, ".", octet2, ".", octet3, ".", 255, " &nbsp &nbsp &nbsp &nbsp</p>")
+					totalIp(w, cidr)
+				}
+				homeButton(w, envURL)
+				fmt.Fprint(w, "</th>")
+				fmt.Fprint(w, "</tr>")
+				fmt.Fprint(w, "</table>")
+				fmt.Fprint(w, endHTML)
 			} else {
-				fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp IPv4 Network ID: 192.168.0.0 &nbsp &nbsp &nbsp &nbsp</p>")
-				fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp First Usable IPv4 Host Address: 192.168.0.1 &nbsp &nbsp &nbsp &nbsp</p>")
-				fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp Last Usable IPv4 Host Address: ", octet1, ".", octet2, ".", octet3, ".", 255-1, " &nbsp &nbsp &nbsp &nbsp</p>")
-				fmt.Fprint(w, "<p>&nbsp &nbsp &nbsp &nbsp IPv4 Broadcast Address: ", octet1, ".", octet2, ".", octet3, ".", 255, " &nbsp &nbsp &nbsp &nbsp</p>")
-				totalIp(w, cidr)
+				fmt.Fprint(w, startHTML)
+				fmt.Fprint(w, "&nbsp &nbsp &nbsp &nbsp")
+				fmt.Fprint(w, "<table>")
+				fmt.Fprint(w, "<tr>")
+				fmt.Fprint(w, "<th>")
+				fmt.Fprint(w, "<h1>&nbsp &nbsp &nbsp &nbsp Incorrect IPv4 and/or CIDR Notation &nbsp &nbsp &nbsp &nbsp</h>")
+				homeButton(w, envURL)
+				fmt.Fprint(w, "</th>")
+				fmt.Fprint(w, "</tr>")
+				fmt.Fprint(w, "</table>")
+				fmt.Fprint(w, endHTML)
 			}
-			homeButton(w, domainName)
-			fmt.Fprint(w, "</th>")
-			fmt.Fprint(w, "</tr>")
-			fmt.Fprint(w, "</table>")
-			fmt.Fprint(w, endHTML)
-		} else {
-			fmt.Fprint(w, startHTML)
-			fmt.Fprint(w, "&nbsp &nbsp &nbsp &nbsp")
-			fmt.Fprint(w, "<table>")
-			fmt.Fprint(w, "<tr>")
-			fmt.Fprint(w, "<th>")
-			fmt.Fprint(w, "<h1>&nbsp &nbsp &nbsp &nbsp Incorrect IPv4 and/or CIDR Notation &nbsp &nbsp &nbsp &nbsp</h>")
-			homeButton(w, domainName)
-			fmt.Fprint(w, "</th>")
-			fmt.Fprint(w, "</tr>")
-			fmt.Fprint(w, "</table>")
-			fmt.Fprint(w, endHTML)
+		})
+
+		socket := envAddress + ":" + envPort
+		fmt.Println("subnet result is running on " + socket)
+
+		//Log error
+		if err := http.ListenAndServe(socket, nil); err != nil {
+			log.Fatal(err)
 		}
-	})
-
-	socket := envAddress + ":" + envPort
-	fmt.Println("subnet result is running on " + socket)
-
-	//Log error
-	if err := http.ListenAndServe(socket, nil); err != nil {
-		log.Fatal(err)
-	}
 	}
 }
 
