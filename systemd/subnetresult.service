@@ -6,7 +6,7 @@ Requires=subnetcalc.service
 User=subnetcalc
 Group=subnetcalc
 Type=simple
-ExecStart=/usr/local/bin/subnetresult
+ExecStart=/usr/bin/subnetresult
 
 [Install]
 WantedBy=multi-user.target
