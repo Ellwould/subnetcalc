@@ -59,6 +59,13 @@ mkdir -p /root/go/{bin,pkg,src/subnethome,src/subnetresult};
 cp /root/subnetcalc/go/subnethome.go /root/go/src/subnethome/subnethome.go;
 cp /root/subnetcalc/go/subnetresult.go /root/go/src/subnetresult/subnetresult.go;
 
+# Create Go mod for subnethome
+
+export PATH=$PATH:/usr/local/go/bin;
+cd /root/go/src/subnethome;
+go mod init root/go/src/subnethome;
+go mod tidy;
+
 # Create Go mod for subnetresult
 
 export PATH=$PATH:/usr/local/go/bin;
