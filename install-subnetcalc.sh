@@ -31,7 +31,7 @@ fi;
 # Copy unit files and restart systemd deamon
 
 cp /root/subnetcalc/systemd/subnetcalc.service /usr/lib/systemd/system/;
-cp /root/subnetcalc/systemd/subnetresult.service /usr/lib/systemd/system;
+cp /root/subnetcalc/systemd/subnetresult.service /usr/lib/systemd/system/;
 systemctl daemon-reload;
 
 #----------------------------------------------------------------------
@@ -43,9 +43,13 @@ rm -rf /usr/local/go && tar -C /usr/local -xzf go1.24.5.linux-amd64.tar.gz;
 
 # Create subnetcalc directories
 
-mkdir -p /etc/subnetcalc/html-css
+mkdir -p /etc/subnetcalc/html-css;
 
-# Create HTML/CSS directory and copy HTML/CSS start and end file
+# Copy Subnetcalc configuration file
+
+cp /root/subnetcalc/env/subnetcalc.env /etc/subnetcalc/subnetcalc.env;
+
+# Copy HTML/CSS start and end file
 
 cp /root/subnetcalc/html-css/subnetcalc-start.html /etc/subnetcalc/html-css;
 cp /root/subnetcalc/html-css/subnetcalc-end.html /etc/subnetcalc/html-css;
