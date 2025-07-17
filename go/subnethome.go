@@ -253,7 +253,7 @@ func main() {
 		})
 
 		socket := envAddress + ":" + envPort
-		fmt.Println("subnethome is running on localhost and port " + socket)
+		fmt.Println("subnethome is running on " + socket)
 
 		// Start server on port specified above
 		log.Fatal(http.ListenAndServe(socket, nil))
