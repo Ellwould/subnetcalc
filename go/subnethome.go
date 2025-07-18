@@ -123,7 +123,7 @@ func main() {
 			fmt.Fprintf(w, "    <th><a href=\"https://ell.today\" class=\"externalButton tableButton\">Written by Elliot Keavney (Website)</a></th>")
 			fmt.Fprintf(w, "  </tr>")
 			fmt.Fprintf(w, "  <tr>")
-			fmt.Fprintf(w, "    <th><a href=\"https://github.com/Ellwould/subnetcalc\" class=\"externalButton tableButton\">Subnetcalc Source Code (GitHub)</a></th>")
+			fmt.Fprintf(w, "    <th><a href=\"https://github.com/ellwould/subnetcalc\" class=\"externalButton tableButton\">Subnetcalc Source Code (GitHub)</a></th>")
 			fmt.Fprintf(w, "  </tr>")
 			fmt.Fprintf(w, "  <tr>")
 			fmt.Fprintf(w, "    <th><a href=\"https://datatracker.ietf.org/doc/html/rfc1918\" class=\"externalButton tableButton\">IETF RFC 1918 Document</a></th>")
